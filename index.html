@@ -22,21 +22,24 @@
         }
         /* Background Image */
         
-        body::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: url("couple.jpg") center/cover no-repeat;
-            filter: blur(8px) brightness(0.6);
-            z-index: -1;
-        }
-        
-        h1 {
-            margin-top: 20vh;
-            font-size: 32px;
-            animation: glow 2s infinite alternate;
-            padding: 0 20px;
-        }
+       body {
+    height: 100vh;
+    background-image: url("couple.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    position: relative;
+}
+
+body::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(8px);
+    background: rgba(0,0,0,0.4);
+}
+
         
         @keyframes glow {
             from {
@@ -186,3 +189,4 @@
 </body>
 
 </html>
+
