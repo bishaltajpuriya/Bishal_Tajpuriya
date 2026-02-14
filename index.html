@@ -2,88 +2,185 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will You Be My Valentine?</title>
+
     <style>
-        body {
+        * {
             margin: 0;
             padding: 0;
-            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            box-sizing: border-box;
             font-family: Arial, sans-serif;
-            text-align: center;
+        }
+        
+        body {
+            height: 100vh;
             overflow: hidden;
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+        /* Background Image */
+        
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url("couple.jpg") center/cover no-repeat;
+            filter: blur(8px) brightness(0.6);
+            z-index: -1;
         }
         
         h1 {
-            margin-top: 100px;
-            font-size: 40px;
-            color: white;
+            margin-top: 20vh;
+            font-size: 32px;
+            animation: glow 2s infinite alternate;
+            padding: 0 20px;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px white;
+            }
+            to {
+                text-shadow: 0 0 25px pink;
+            }
         }
         
         .buttons {
-            margin-top: 50px;
+            margin-top: 40px;
             position: relative;
         }
         
         button {
-            padding: 15px 30px;
-            font-size: 20px;
+            padding: 12px 25px;
+            font-size: 18px;
             border: none;
             border-radius: 30px;
             cursor: pointer;
             transition: 0.3s;
+            margin: 10px;
         }
         
         #yesBtn {
-            background-color: #ff4d6d;
+            background: #ff2e63;
             color: white;
         }
         
         #noBtn {
-            background-color: #444;
+            background: #333;
             color: white;
             position: absolute;
         }
         
         #message {
-            margin-top: 40px;
-            font-size: 28px;
+            margin-top: 30px;
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 1s ease;
+            padding: 0 20px;
+        }
+        /* Floating hearts */
+        
+        .heart {
+            position: absolute;
             color: white;
+            animation: float 6s linear infinite;
+        }
+        
+        @keyframes float {
+            from {
+                transform: translateY(100vh);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-10vh);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <h1>Will You Be My Valentine meri Budi? ❤️</h1>
+    <h1>Will You Be My Valentine? ❤️</h1>
 
     <div class="buttons">
         <button id="yesBtn">Yes 💖</button>
         <button id="noBtn">No 😢</button>
     </div>
 
-    <div id="message"></div>
+    <div id="message">I knew you'd say YES! 💕 You make my world beautiful 😍</div>
 
     <script>
         const yesBtn = document.getElementById("yesBtn");
         const noBtn = document.getElementById("noBtn");
         const message = document.getElementById("message");
 
-        let yesSize = 20;
+        let yesSize = 18;
 
-        noBtn.addEventListener("mouseover", function() {
+        // Move No button (works for mobile too)
+        function moveNoButton() {
             const x = Math.random() * (window.innerWidth - 100);
             const y = Math.random() * (window.innerHeight - 100);
             noBtn.style.left = x + "px";
             noBtn.style.top = y + "px";
 
-            yesSize += 5;
+            yesSize += 4;
             yesBtn.style.fontSize = yesSize + "px";
-        });
+        }
+
+        noBtn.addEventListener("mouseover", moveNoButton);
+        noBtn.addEventListener("click", moveNoButton);
+        noBtn.addEventListener("touchstart", moveNoButton);
 
         yesBtn.addEventListener("click", function() {
-            message.innerHTML = "Yayyy! 💕 I knew you'd say YES! 😍 I Love you so much meri budi ❤️ ";
             document.querySelector(".buttons").style.display = "none";
+            message.style.opacity = 1;
+            createConfetti();
         });
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "❤️";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.fontSize = Math.random() * 20 + 10 + "px";
+            heart.style.animationDuration = Math.random() * 3 + 3 + "s";
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        setInterval(createHeart, 400);
+
+        function createConfetti() {
+            for (let i = 0; i < 80; i++) {
+                const confetti = document.createElement("div");
+                confetti.style.position = "absolute";
+                confetti.style.width = "8px";
+                confetti.style.height = "8px";
+                confetti.style.backgroundColor =
+                    "hsl(" + Math.random() * 360 + ", 100%, 50%)";
+                confetti.style.left = Math.random() * window.innerWidth + "px";
+                confetti.style.top = "-10px";
+                confetti.style.transition = "transform 3s linear, opacity 3s";
+
+                document.body.appendChild(confetti);
+
+                setTimeout(() => {
+                    confetti.style.transform =
+                        "translateY(" + window.innerHeight + "px) rotate(720deg)";
+                    confetti.style.opacity = 0;
+                }, 10);
+
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
+        }
     </script>
 
 </body>
