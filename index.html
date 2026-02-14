@@ -24,12 +24,18 @@
             color: white;
         }
 
-        /* Optional light overlay for readability */
         body::after {
             content: "";
             position: absolute;
             inset: 0;
-            background: rgba(0, 0, 0, 0.2); /* lighter overlay, no blur */
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            position: relative;
+            z-index: 1;
+            margin-top: 50px;
+            animation: glow 1.5s infinite alternate;
         }
 
         @keyframes glow {
@@ -40,13 +46,6 @@
             to {
                 text-shadow: 0 0 25px pink;
             }
-        }
-
-        h1 {
-            position: relative;
-            z-index: 1;
-            margin-top: 50px;
-            animation: glow 1.5s infinite alternate;
         }
 
         .buttons {
@@ -86,10 +85,9 @@
             z-index: 1;
         }
 
-        /* Floating hearts */
-        .heart {
+        /* Floating hearts and kisses */
+        .heart, .kiss {
             position: absolute;
-            color: white;
             animation: float 6s linear infinite;
             z-index: 0;
         }
@@ -117,7 +115,7 @@
         <button id="noBtn">No 😢</button>
     </div>
 
-    <div id="message">I knew you'd say YES! 💕 You make my world beautiful 😍</div>
+    <div id="message"></div>
 
     <script>
         const yesBtn = document.getElementById("yesBtn");
@@ -125,8 +123,9 @@
         const message = document.getElementById("message");
 
         let yesSize = 18;
+        let noClickedTimes = 0;
 
-        // Move No button (works for mobile too)
+        // Move No button and enlarge Yes button
         function moveNoButton() {
             const x = Math.random() * (window.innerWidth - 100);
             const y = Math.random() * (window.innerHeight - 100);
@@ -137,16 +136,35 @@
             yesBtn.style.fontSize = yesSize + "px";
         }
 
-        noBtn.addEventListener("mouseover", moveNoButton);
-        noBtn.addEventListener("click", moveNoButton);
-        noBtn.addEventListener("touchstart", moveNoButton);
+        // When No is clicked, show "Please 😢" 20 times then remove No
+        function handleNoClick() {
+            noClickedTimes++;
+            if (noClickedTimes <= 20) {
+                message.innerHTML += "Please 😢 ";
+                message.style.opacity = 1;
+                yesSize += 4;
+                yesBtn.style.fontSize = yesSize + "px";
+            }
+            if (noClickedTimes === 20) {
+                noBtn.style.display = "none";
+            }
+            moveNoButton();
+        }
 
+        noBtn.addEventListener("mouseover", moveNoButton);
+        noBtn.addEventListener("click", handleNoClick);
+        noBtn.addEventListener("touchstart", handleNoClick);
+
+        // When Yes is clicked
         yesBtn.addEventListener("click", function () {
             document.querySelector(".buttons").style.display = "none";
             message.style.opacity = 1;
+            message.innerHTML = "I knew you'd say YES! 💕 I love you so much Budi 😍";
             createConfetti();
+            createKisses();
         });
 
+        // Floating hearts
         function createHeart() {
             const heart = document.createElement("div");
             heart.classList.add("heart");
@@ -163,6 +181,7 @@
 
         setInterval(createHeart, 400);
 
+        // Confetti
         function createConfetti() {
             for (let i = 0; i < 80; i++) {
                 const confetti = document.createElement("div");
@@ -188,6 +207,24 @@
                 }, 3000);
             }
         }
+
+        // Kissing animation 💋 after Yes
+        function createKisses() {
+            for (let i = 0; i < 30; i++) {
+                const kiss = document.createElement("div");
+                kiss.classList.add("kiss");
+                kiss.innerHTML = "💋";
+                kiss.style.left = Math.random() * 100 + "vw";
+                kiss.style.fontSize = Math.random() * 24 + 12 + "px";
+                kiss.style.animationDuration = Math.random() * 3 + 3 + "s";
+                document.body.appendChild(kiss);
+
+                setTimeout(() => {
+                    kiss.remove();
+                }, 6000);
+            }
+        }
+
     </script>
 
 </body>
