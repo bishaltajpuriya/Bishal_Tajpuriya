@@ -4,7 +4,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will You Be My Valentine?</title>
-
     <style>
         * {
             margin: 0;
@@ -12,49 +11,50 @@
             box-sizing: border-box;
             font-family: Arial, sans-serif;
         }
-        
+
         body {
             height: 100vh;
+            background-image: url("couple.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             overflow: hidden;
             position: relative;
             text-align: center;
             color: white;
         }
-        /* Background Image */
-        
-       body {
-    height: 100vh;
-    background-image: url("couple.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    overflow: hidden;
-    position: relative;
-}
 
-body::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    backdrop-filter: blur(8px);
-    background: rgba(0,0,0,0.4);
-}
+        /* Optional light overlay for readability */
+        body::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.2); /* lighter overlay, no blur */
+        }
 
-        
         @keyframes glow {
             from {
                 text-shadow: 0 0 10px white;
             }
+
             to {
                 text-shadow: 0 0 25px pink;
             }
         }
-        
+
+        h1 {
+            position: relative;
+            z-index: 1;
+            margin-top: 50px;
+            animation: glow 1.5s infinite alternate;
+        }
+
         .buttons {
             margin-top: 40px;
             position: relative;
+            z-index: 1;
         }
-        
+
         button {
             padding: 12px 25px;
             font-size: 18px;
@@ -64,38 +64,42 @@ body::after {
             transition: 0.3s;
             margin: 10px;
         }
-        
+
         #yesBtn {
             background: #ff2e63;
             color: white;
         }
-        
+
         #noBtn {
             background: #333;
             color: white;
             position: absolute;
         }
-        
+
         #message {
             margin-top: 30px;
             font-size: 24px;
             opacity: 0;
             transition: opacity 1s ease;
             padding: 0 20px;
+            position: relative;
+            z-index: 1;
         }
+
         /* Floating hearts */
-        
         .heart {
             position: absolute;
             color: white;
             animation: float 6s linear infinite;
+            z-index: 0;
         }
-        
+
         @keyframes float {
             from {
                 transform: translateY(100vh);
                 opacity: 1;
             }
+
             to {
                 transform: translateY(-10vh);
                 opacity: 0;
@@ -137,7 +141,7 @@ body::after {
         noBtn.addEventListener("click", moveNoButton);
         noBtn.addEventListener("touchstart", moveNoButton);
 
-        yesBtn.addEventListener("click", function() {
+        yesBtn.addEventListener("click", function () {
             document.querySelector(".buttons").style.display = "none";
             message.style.opacity = 1;
             createConfetti();
@@ -189,4 +193,3 @@ body::after {
 </body>
 
 </html>
-
